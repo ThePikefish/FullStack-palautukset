@@ -4,15 +4,16 @@ import { useState } from 'react'
 const Statistics = ({good, neutral, bad}) => {
 
   const total = () => good + neutral + bad
-  const avg = () => {
-    if (total() === 0) return (0)
-    return ((good - bad) / total())
-  }
-  const positive = () => {
-    if (total() === 0) return (0)
-    return ((good / total()) * 100)
-  }
+  const avg = () => (good - bad) / total()
+  const positive = () => (good / total()) * 100
 
+  if (total() === 0) {
+    return (
+      <div>
+        Palautetta ei ole annettu
+      </div>
+    )
+  }
   return (
     <div>
       Hyvä: {good}<br/>
