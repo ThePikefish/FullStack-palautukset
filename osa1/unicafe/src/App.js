@@ -1,6 +1,13 @@
 import { useState } from 'react'
 
 
+const StatisticLine = ({text, value}) => (
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
+)
+
 const Statistics = ({good, neutral, bad}) => {
 
   const total = () => good + neutral + bad
@@ -10,18 +17,23 @@ const Statistics = ({good, neutral, bad}) => {
   if (total() === 0) {
     return (
       <div>
-        Palautetta ei ole annettu
+        <br/>Palautetta ei ole annettu
       </div>
     )
   }
   return (
     <div>
-      Hyvä: {good}<br/>
-      Neutraali: {neutral}<br/>
-      Huono: {bad}<br/>
-      Yhteensä: {total()}<br/>
-      Keskiarvo: {avg()}<br/>
-      Positiivisia: {positive()}%
+      <h2>Palautteiden statistiikkaa</h2>
+      <table>
+        <tbody>
+          <StatisticLine text="Hyvä:" value={good} />
+          <StatisticLine text="Neutraali:" value={neutral} />
+          <StatisticLine text="Huono:" value={bad} />
+          <StatisticLine text="Yhteensä:" value={total()} />
+          <StatisticLine text="Keskiarvo:" value={avg()} />
+          <StatisticLine text="Positiivisia:" value={positive()} />
+        </tbody>
+      </table>
     </div>
   )
 }
@@ -56,10 +68,7 @@ const App = () => {
           <Button handleClick={() => addToNeutral()} text="Neutraali" />
           <Button handleClick={() => addToBad()} text="Huono" />
       </div>
-      <div>
-        <h2>Palautteiden statistiikkaa</h2>
-        <Statistics good={good} neutral={neutral} bad={bad} /> 
-      </div>
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
