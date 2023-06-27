@@ -16,6 +16,17 @@ const App = () => {
     setBad(bad + 1)
   }
 
+  const total = () => good + neutral + bad
+  const avg = () => {
+    if (total() === 0) return (0)
+    return ((good - bad) / total())
+  }
+  const positive = () => {
+    if (total() === 0) return (0)
+    return ((good / total()) * 100)
+  }
+
+
   return (
     <div>
       <div>
@@ -25,11 +36,14 @@ const App = () => {
           <Button handleClick={() => addToBad()} text="Huono" />
       </div>
       <div>
-        <h2>Kaikki palautteet</h2>
+        <h2>Palautteiden statistiikkaa</h2>
         <p>
           Hyvä: {good}<br/>
           Neutraali: {neutral}<br/>
-          Huono: {bad}
+          Huono: {bad}<br/>
+          Yhteensä: {total()}<br/>
+          Keskiarvo: {avg()}<br/>
+          Positiivisia: {positive()}%
         </p>
       </div>
     </div>
