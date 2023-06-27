@@ -1,5 +1,36 @@
 import { useState } from 'react'
 
+
+const Statistics = ({good, neutral, bad}) => {
+
+  const total = () => good + neutral + bad
+  const avg = () => {
+    if (total() === 0) return (0)
+    return ((good - bad) / total())
+  }
+  const positive = () => {
+    if (total() === 0) return (0)
+    return ((good / total()) * 100)
+  }
+
+  return (
+    <div>
+      Hyvä: {good}<br/>
+      Neutraali: {neutral}<br/>
+      Huono: {bad}<br/>
+      Yhteensä: {total()}<br/>
+      Keskiarvo: {avg()}<br/>
+      Positiivisia: {positive()}%
+    </div>
+  )
+}
+
+const Button = (props) => (
+  <button onClick={props.handleClick}>
+    {props.text}
+  </button>
+)
+
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
@@ -16,17 +47,6 @@ const App = () => {
     setBad(bad + 1)
   }
 
-  const total = () => good + neutral + bad
-  const avg = () => {
-    if (total() === 0) return (0)
-    return ((good - bad) / total())
-  }
-  const positive = () => {
-    if (total() === 0) return (0)
-    return ((good / total()) * 100)
-  }
-
-
   return (
     <div>
       <div>
@@ -37,24 +57,11 @@ const App = () => {
       </div>
       <div>
         <h2>Palautteiden statistiikkaa</h2>
-        <p>
-          Hyvä: {good}<br/>
-          Neutraali: {neutral}<br/>
-          Huono: {bad}<br/>
-          Yhteensä: {total()}<br/>
-          Keskiarvo: {avg()}<br/>
-          Positiivisia: {positive()}%
-        </p>
+        <Statistics good={good} neutral={neutral} bad={bad} /> 
       </div>
     </div>
   )
 }
 
-
-const Button = (props) => (
-  <button onClick={props.handleClick}>
-    {props.text}
-  </button>
-)
 
 export default App
