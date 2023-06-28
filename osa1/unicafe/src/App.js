@@ -31,7 +31,7 @@ const Statistics = ({good, neutral, bad}) => {
           <StatisticLine text="Huono:" value={bad} />
           <StatisticLine text="Yhteensä:" value={total()} />
           <StatisticLine text="Keskiarvo:" value={avg()} />
-          <StatisticLine text="Positiivisia:" value={positive()} />
+          <StatisticLine text="Positiivisia:" value={positive() + " %"} />
         </tbody>
       </table>
     </div>
