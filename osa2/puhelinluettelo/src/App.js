@@ -9,10 +9,15 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    const personObject = {
-      name: newName
+    if (persons.map(person => person.name).includes(newName)) {
+      alert(`${newName} on jo lisätty puhelinluetteloon`)
     }
-    setPersons(persons.concat(personObject))
+    else {
+      const personObject = {
+        name: newName
+      }
+      setPersons(persons.concat(personObject))
+    }
   }
 
   const handleNameChange = (event) => {
@@ -32,11 +37,9 @@ const App = () => {
         </div>
       </form>
       <h2>Numerot</h2>
-      <ul>
-        {persons.map(person =>
-          <Person key={person.name} person={person} />
-        )}
-      </ul>
+      {persons.map(person =>
+        <Person key={person.name} person={person} />
+      )}
     </div>
   )
 
