@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react'
 import Note from './components/Note'
+import Notification from './components/Notification'
+import Footer from './components/Footer'
 import noteService from './services/notes'
 
 const App = (props) => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   
   useEffect(() => {
@@ -26,9 +29,10 @@ const App = (props) => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote))
       })
       .catch(error => {
-        alert(
-          `muistiinpano '${note.content}' on jo poistettu palvelimelta`
-        )
+        setErrorMessage(`Muistiinpano '${note.content}' on jo poistettu palvelimelta`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000);
         setNotes(notes.filter(n => n.id !== id))
       })
   }
@@ -62,6 +66,7 @@ const App = (props) => {
   return (
     <div>
       <h1>Muistiinpanot</h1>
+      <Notification message={errorMessage} />
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           näytä {showAll ? 'tärkeä' : 'kaikki' }
@@ -83,6 +88,7 @@ const App = (props) => {
         />
         <button type='submit'>tallenna</button>
       </form>
+      <Footer />
     </div>
   )
 }
