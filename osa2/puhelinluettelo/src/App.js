@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import Notification from './components/Notification'
 import personService from './services/persons'
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [newSearch, setNewSearch] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [notificationMessage, setNotificationMessage]= useState(null)
 
   useEffect(() => {
     personService
@@ -31,12 +33,11 @@ const App = () => {
           .update(person.id, changedPerson)
           .then(returnedPerson => {
             setPersons(persons.map(person => person.name !== newName ? person : returnedPerson))
+            setNotification(`Kontaktin '${newName}' numero vaihdettu`)
           })
 
           .catch(error => {
-            alert(
-              `kontakti '${person.name}' on jo poistettu palvelimelta`
-            )
+            setNotification(`Kontakti '${person.name}' on jo poistettu palvelimelta`)
             setPersons(persons.filter(person => person.name !== newName))
           })
       }
@@ -52,6 +53,7 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
         })
+      setNotification(`'${newName}' lisätty`)
     }
   }
 
@@ -60,8 +62,16 @@ const App = () => {
     if (window.confirm(`Haluatko varmasti poistaa kontaktin nimeltä ${person.name}`)) {
       personService
         .remove(id)
-        setPersons(persons.filter(p => p.id !== id))
+      setPersons(persons.filter(p => p.id !== id))
+      setNotification(`Kontakti '${person.name}' poistettiin`)
     }
+  }
+
+  const setNotification = (message) => {
+    setNotificationMessage(message)
+    setTimeout(() => {
+      setNotificationMessage(null)
+    }, 5000);
   }
 
   const handleSearch = (event) => {
@@ -77,6 +87,7 @@ const App = () => {
   return (
     <div>
       <h1>Puhelinluettelo</h1>
+      <Notification message={notificationMessage} />
       <Filter
         search={newSearch}
         onChange={handleSearch}
